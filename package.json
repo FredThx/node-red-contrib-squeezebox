@@ -1,6 +1,6 @@
 {
 "name" : "node-red-contrib-squeezebox",
-"version" : "0.1.0",
+"version" : "0.1.1",
 "description" : "This node gives access to a squeezebox server and his players",
 "dependencies" : {"squeezenode" : "0.1.0"},
 "keywords" : ["node-red","squeezebox", "squeezenode"],
