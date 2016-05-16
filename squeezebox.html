@@ -1,0 +1,99 @@
+<!-- squeezebox-server -->
+<script type="text/javascript">
+    RED.nodes.registerType('squeezebox-server',{
+        category: 'config',
+        defaults: {
+            host: {value:"http://localhost",required:true},
+            port: {value:9002, required:true, validate: RED.validators.number()},
+			name: {value:"Logitech Media Server", required:false}
+        },
+        label: function() {
+            return this.name || this.host || "My squeezebox-server";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="squeezebox-server">
+    <div class="form-row">
+        <label for="node-config-input-host"><i class="icon-bookmark"></i> Host</label>
+        <input type="text" id="node-config-input-host" placeholder = "Host">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-port"><i class="icon-bookmark"></i> Port</label>
+        <input type="text" id="node-config-input-port" placeholder = "Port">
+	</div>
+	<div class="form-row">
+        <label for="node-config-input-name"><i class="icon-bookmark"></i> Name</label>
+        <input type="text" id="node-config-input-name" placeholder = "Name">
+	</div>
+</script>
+
+<script type= "text/x-red"  data-help-name= "squeezebox-server"> 
+    <p> A squeezebox server.</p>
+	<p> (Logitech media server)</p>
+</script>
+
+<!-- squeezebox-out -->
+
+<script type="text/javascript">
+    RED.nodes.registerType('squeezebox-out',{
+        category: 'Media',
+        color: '#3FADB5',
+        defaults: {
+            squeezebox_server : { value : "", type:'squeezebox-server', required : true },
+			player_name: {value:"MyPlayer", required:true},
+			command : { value : "", required : false}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "squeezebox.png",
+        label: function() {
+            var label = this.player_name || "squeezebox";
+			if (this.command) {
+				label += " : " + this.command;
+			}
+			return label;
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="squeezebox-out">
+    <div class="form-row">
+        <label for="node-input-squeezebox_server"><i class="icon-tag"></i> SqueezeBox Server</label>
+        <input type="text" id="node-input-squeezebox_server" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-player_name"><i class="icon-tag"></i> Player Name</label>
+        <input type="text" id="node-input-player_name" placeholder = "Name">
+    </div>
+	<div class="form-row">
+        <label for="node-input-command"><i class="icon-tag"></i> Command</label>
+        <input type="text" id="node-input-command" placeholder="msg.payload">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="squeezebox-out">
+    <p>Send command to squeezebox player.</p>
+	<p>if <strong>command</strong> is not defined, <strong>msg.payload</strong> is used as command.</p>
+	<ul>Simple commands (in the node definition or msg.payload):
+		<li>play</li>
+		<li>pause</li>
+		<li>stop</li>
+		<li>getCurrentTitle</li>
+		<li>...</li>
+	</ul>
+	<ul>Complex commands (in the node definition or msg.payload):
+		<li>button,jump_fwd</li>
+		<li>button,jump_rew</li>
+		<li>mixer,volume,10</li>
+		<li>...</li>
+	</ul>
+	<ul>Complex commands (in msg.payload):
+		<li>msg.payload = ["mixer","volume",10]</li>
+		<li>msg.payload = ["display","Hello, my friend","SqueezeBox is amazing!",30]</li>
+		<li>...</li>
+	</ul>
+	<p> Node return a msg.payload as :</p>
+	<p>{ "params": [ "00:04:20:26:1a:25", [ "current_title", "?" ] ], "result": "Title of my song.", "method": "slim.request", "ok": true }</p>
+	<p> From more informations, see your media server documentation.</p>
+</script>
