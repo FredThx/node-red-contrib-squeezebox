@@ -11,5 +11,9 @@
 },
 "author":{
 		"name": "FredThx"
+},
+"repository": {
+  "type": "git",
+  "url": "https://github.com/FredThx/node-red-contrib-squeezebox"
 }
 }
